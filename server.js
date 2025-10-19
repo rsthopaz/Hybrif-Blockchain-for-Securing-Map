@@ -1,163 +1,162 @@
 import express from "express";
-import multer from "multer";
 import cors from "cors";
+import mongoose from "mongoose";
 import dotenv from "dotenv";
-import fs from "fs";
-import pinataSDK from "@pinata/sdk";
-import { execSync } from "child_process";
-import path from "path";
+import Area from "./models/Area.js";
 
-// Load environment variables from .env file
 dotenv.config();
 
 const app = express();
-const upload = multer({ dest: "uploads/" });
-
-// Middlewares
 app.use(cors());
 app.use(express.json());
 
-// Init Pinata using JWT
-const pinata = new pinataSDK({ pinataJWTKey: process.env.PINATA_JWT });
+const PORT = process.env.PORT || 5001;
+const MONGO_URI = process.env.MONGODB_URI;
 
-/* ===========================================================
-   🚀 Deploy Smart Contract via Hardhat
-=========================================================== */
+// ===============================
+// 🔗 CONNECT TO MONGODB
+// ===============================
+mongoose
+  .connect(MONGO_URI)
+  .then(() => console.log("✅ MongoDB connected"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-app.get("/deploy", (req, res) => {
+// ===============================
+// 🧩 API ROUTES
+// ===============================
+
+// 📦 Store area metadata (setelah commit ke blockchain)
+app.post("/areas/store", async (req, res) => {
   try {
-    const output = execSync("npx hardhat run scripts/deploy.cjs --network sepolia", {
-      encoding: "utf-8",
-      cwd: "../zktp", // 👉 Point to your Hardhat project folder
+    const {
+      coordinates,
+      securityLevel,
+      name,
+      commitment,
+      owner,
+      areaIndex,
+      publishedOnChain,
+    } = req.body;
+
+    // Validasi dasar
+    if (!coordinates || coordinates.length < 3)
+      return res.status(400).json({ error: "Need at least 3 coordinates" });
+    if (!commitment || !owner)
+      return res.status(400).json({ error: "Missing commitment or owner" });
+
+    // Pastikan tidak duplikat berdasarkan areaIndex atau commitment
+    const existing = await Area.findOne({ $or: [{ areaIndex }, { commitment }] });
+    if (existing)
+      return res.status(400).json({ error: "Area already exists" });
+
+    const area = new Area({
+      coordinates,
+      securityLevel,
+      name,
+      areaIndex,
+      commitment,
+      owner,
+      revealed: false,
+      publishedOnChain: publishedOnChain ?? true,
     });
 
-    const match = output.match(/Contract deployed to: (0x[a-fA-F0-9]{40})/);
-    if (!match) throw new Error("Contract address not found");
+    await area.save();
 
-    const contractAddress = match[1];
-    console.log("✅ Contract deployed:", contractAddress);
-
-    res.json({ address: contractAddress });
+    res.json({ success: true, area });
   } catch (err) {
-    console.error("❌ Deploy error:", err);
+    console.error("❌ Error saving area:", err);
     res.status(500).json({ error: err.message });
   }
 });
 
-/* ===========================================================
-   🔍 Verify Smart Contract
-=========================================================== */
+// 🔓 Update status reveal (setelah user reveal di blockchain)
+// 🔓 Update status reveal (setelah user reveal di blockchain)
+// app.patch("/areas/reveal/:index", async (req, res) => {
+//   try {
+//     const { index } = req.params;
+//     const { revealed } = req.body;
 
-app.post("/verify", (req, res) => {
-  const { address } = req.body;
+//     // Kalau index bukan angka (hash atau string), cari pakai commitment
+//     let filter = {};
+//     if (/^[0-9]+$/.test(index)) {
+//       filter = { areaIndex: Number(index) };
+//     } else {
+//       filter = { commitment: index }; // pakai hash commit sebagai ID unik
+//     }
 
-  if (!address) {
-    return res.status(400).json({ error: "Contract address required" });
-  }
+//     const area = await Area.findOneAndUpdate(
+//       filter,
+//       { $set: { revealed } },
+//       { new: true }
+//     );
 
+//     if (!area) return res.status(404).json({ error: "Area not found" });
+
+//     res.json({ success: true, area });
+//   } catch (err) {
+//     console.error("❌ Error updating reveal:", err);
+//     res.status(500).json({ error: err.message });
+//   }
+// });
+app.patch("/areas/reveal/:commitment", async (req, res) => {
   try {
-    const output = execSync(`npx hardhat verify --network sepolia ${address}`, {
-      encoding: "utf-8",
-      cwd: path.resolve("../zktp"),
+    let { commitment } = req.params;
+    const { revealed } = req.body;
+
+    commitment = commitment.trim().toLowerCase();
+
+    console.log("🟡 Incoming reveal for:", commitment);
+
+    const area = await Area.findOne({
+      commitment: { $regex: new RegExp(`^${commitment}$`, "i") },
     });
 
-    res.json({ success: true, output });
+    if (!area) {
+      console.log("❌ Area not found for commitment:", commitment);
+      return res.status(404).json({ error: "Area not found" });
+    }
+
+    console.log("🔍 Found area:", area.name);
+
+    area.revealed = revealed;
+    await area.save();
+
+    res.json({ success: true, area });
   } catch (err) {
-    console.error("❌ Verify error:", err);
-    res.status(500).json({ success: false, error: err.message });
+    console.error("❌ Error updating reveal:", err);
+    res.status(500).json({ error: err.message });
   }
 });
 
-/* ===========================================================
-   📤 Upload Multiple Images + Metadata to IPFS (Pinata)
-=========================================================== */
 
-app.post(
-  "/upload",
-  upload.fields([
-    { name: "thumbnail", maxCount: 1 },
-    { name: "images", maxCount: 20 },
-  ]),
-  async (req, res) => {
-    try {
-      const thumbnailFile = req.files["thumbnail"]?.[0];
-      const extraFiles = req.files["images"] || [];
 
-      if (!thumbnailFile && extraFiles.length === 0) {
-        return res.status(400).json({ error: "No files uploaded" });
-      }
 
-      console.log(`📸 Uploading ${1 + extraFiles.length} files to Pinata...`);
-
-      // Upload thumbnail (main image)
-      let thumbnailCID = null;
-      if (thumbnailFile) {
-        const stream = fs.createReadStream(thumbnailFile.path);
-        const result = await pinata.pinFileToIPFS(stream, {
-          pinataMetadata: { name: thumbnailFile.originalname },
-        });
-
-        thumbnailCID = `ipfs://${result.IpfsHash}`;
-        fs.unlinkSync(thumbnailFile.path);
-      }
-
-      // Upload additional images
-      const extraImageCIDs = [];
-      for (const file of extraFiles) {
-        const stream = fs.createReadStream(file.path);
-        const result = await pinata.pinFileToIPFS(stream, {
-          pinataMetadata: { name: file.originalname },
-        });
-
-        extraImageCIDs.push(`ipfs://${result.IpfsHash}`);
-        fs.unlinkSync(file.path);
-      }
-
-      // Retrieve metadata from the form
-      const { name, description, attributes, metadataName } = req.body;
-      let parsedAttributes = [];
-
-      try {
-        parsedAttributes = JSON.parse(attributes || "[]");
-      } catch (e) {
-        console.error("Invalid attributes JSON", e);
-      }
-
-      // Create metadata JSON according to Rarible's standard
-      const metadata = {
-        name,
-        description,
-        image: thumbnailCID, // ✅ main image displayed on Rarible
-        extra_images: extraImageCIDs, // additional images
-        attributes: parsedAttributes,
-      };
-
-      // Upload metadata JSON to IPFS
-      const metadataResult = await pinata.pinJSONToIPFS(metadata, {
-        pinataMetadata: {
-          name: metadataName ? `${metadataName}.json` : "metadata.json",
-        },
-      });
-
-      console.log("✅ Upload success:", metadataResult.IpfsHash);
-
-      res.json({
-        success: true,
-        thumbnail_cid: thumbnailCID,
-        extra_image_cids: extraImageCIDs,
-        metadata_cid: metadataResult.IpfsHash,
-        metadata_uri: `ipfs://${metadataResult.IpfsHash}`,
-      });
-    } catch (err) {
-      console.error("❌ Upload error:", err);
-      res.status(500).json({ error: err.message });
-    }
+// 🧾 Ambil semua area
+app.get("/areas", async (req, res) => {
+  try {
+    const areas = await Area.find().sort({ createdAt: -1 });
+    res.json(areas);
+  } catch (err) {
+    console.error("❌ Error fetching areas:", err);
+    res.status(500).json({ error: err.message });
   }
-);
+});
 
-/* ===========================================================
-   🚦 Start Server
-=========================================================== */
+// 🧭 Cek area milik wallet tertentu
+app.get("/areas/owner/:wallet", async (req, res) => {
+  try {
+    const { wallet } = req.params;
+    const areas = await Area.find({ owner: wallet }).sort({ createdAt: -1 });
+    res.json(areas);
+  } catch (err) {
+    console.error("❌ Error fetching areas by owner:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`🚀 Backend running at http://localhost:${PORT}`));
+// ===============================
+// 🚀 START SERVER
+// ===============================
+app.listen(PORT, () => {
+  console.log(`🚀 Backend running on http://localhost:${PORT}`);
+});
