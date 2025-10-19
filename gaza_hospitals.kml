@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+    <Document id="1">
+        <Placemark id="3">
+            <name>Rumah Sakit Al-Shifa</name>
+            <description>&lt;b&gt;Rumah Sakit Al-Shifa&lt;/b&gt;&lt;br&gt;&lt;br&gt;Rumah sakit utama Gaza. Saat ini dalam kondisi kritis dengan pasien melebihi kapasitas.&lt;br&gt;&lt;br&gt;Kategori Fasilitas: Rumah Sakit&lt;br&gt;Kapasitas Maksimal: 500 pasien&lt;br&gt;Pasien Saat Ini: 720&lt;br&gt;ICU: 20 tempat tidur (18 terisi)&lt;br&gt;Ventilator: 15 unit (12 aktif)&lt;br&gt;Kebutuhan Mendesak: Obat, darah, oksigen, listrik&lt;br&gt;Status Operasional: Kritis&lt;br&gt;Tanggal Update: 2025-09-21&lt;br&gt;Sumber Verifikasi: Kemenkes Palestina / UN OCHA&lt;br&gt;Hash Laporan: SHA-256: aabbccddeeff...&lt;br&gt;</description>
+            <Point id="2">
+                <coordinates>34.4561,31.5296,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="5">
+            <name>Rumah Sakit Indonesia</name>
+            <description>&lt;b&gt;Rumah Sakit Indonesia&lt;/b&gt;&lt;br&gt;&lt;br&gt;Didirikan dengan bantuan Indonesia, melayani wilayah Gaza Utara.&lt;br&gt;&lt;br&gt;Kategori Fasilitas: Rumah Sakit&lt;br&gt;Kapasitas Maksimal: 230 pasien&lt;br&gt;Pasien Saat Ini: 310&lt;br&gt;ICU: 10 tempat tidur (9 terisi)&lt;br&gt;Ventilator: 8 unit (6 aktif)&lt;br&gt;Kebutuhan Mendesak: Obat anak, oksigen&lt;br&gt;Status Operasional: Darurat&lt;br&gt;Tanggal Update: 2025-09-21&lt;br&gt;Sumber Verifikasi: NGO Medis / WHO&lt;br&gt;Hash Laporan: SHA-256: ddeeff112233...&lt;br&gt;</description>
+            <Point id="4">
+                <coordinates>34.4945,31.5576,0.0</coordinates>
+            </Point>
+        </Placemark>
+        <Placemark id="7">
+            <name>Rumah Sakit Eropa Gaza</name>
+            <description>&lt;b&gt;Rumah Sakit Eropa Gaza&lt;/b&gt;&lt;br&gt;&lt;br&gt;Rumah sakit rujukan besar di selatan Gaza, dekat Khan Younis.&lt;br&gt;&lt;br&gt;Kategori Fasilitas: Rumah Sakit&lt;br&gt;Kapasitas Maksimal: 400 pasien&lt;br&gt;Pasien Saat Ini: 390&lt;br&gt;ICU: 15 tempat tidur (14 terisi)&lt;br&gt;Ventilator: 12 unit (10 aktif)&lt;br&gt;Kebutuhan Mendesak: Listrik, pasokan air, antibiotik&lt;br&gt;Status Operasional: Terbatas&lt;br&gt;Tanggal Update: 2025-09-21&lt;br&gt;Sumber Verifikasi: UNRWA / WHO&lt;br&gt;Hash Laporan: SHA-256: 998877665544...&lt;br&gt;</description>
+            <Point id="6">
+                <coordinates>34.3033,31.3431,0.0</coordinates>
+            </Point>
+        </Placemark>
+    </Document>
+</kml>

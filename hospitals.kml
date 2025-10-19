@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <Placemark>
+      <name>Rumah Sakit Al-Shifa</name>
+      <description>Rumah sakit utama Gaza. Saat ini dalam kondisi kritis dengan pasien melebihi kapasitas.&lt;br/&gt;&lt;br/&gt;&lt;b&gt;Kategori Fasilitas:&lt;/b&gt; Rumah Sakit&lt;br/&gt;&lt;b&gt;Kapasitas Maksimal:&lt;/b&gt; 500 pasien&lt;br/&gt;&lt;b&gt;Pasien Saat Ini:&lt;/b&gt; 720&lt;br/&gt;&lt;b&gt;ICU:&lt;/b&gt; 20 tempat tidur (18 terisi)&lt;br/&gt;&lt;b&gt;Ventilator:&lt;/b&gt; 15 unit (12 aktif)&lt;br/&gt;&lt;b&gt;Kebutuhan Mendesak:&lt;/b&gt; Obat, darah, oksigen, listrik&lt;br/&gt;&lt;b&gt;Status Operasional:&lt;/b&gt; Kritis&lt;br/&gt;&lt;b&gt;Tanggal Update:&lt;/b&gt; 2025-09-21&lt;br/&gt;&lt;b&gt;Sumber Verifikasi:&lt;/b&gt; Kemenkes Palestina / UN OCHA&lt;br/&gt;&lt;b&gt;Hash Laporan:&lt;/b&gt; SHA-256: aabbccddeeff...&lt;br/&gt;</description>
+      <Point>
+        <coordinates>34.4561,31.5296,0</coordinates>
+      </Point>
+      <Polygon>
+        <outerBoundaryIs>
+          <LinearRing>
+            <coordinates>34.4555,31.5292,0 34.4567,31.5292,0 34.4567,31.53,0 34.4555,31.53,0 34.4555,31.5292,0</coordinates>
+          </LinearRing>
+        </outerBoundaryIs>
+      </Polygon>
+    </Placemark>
+  </Document>
+</kml>

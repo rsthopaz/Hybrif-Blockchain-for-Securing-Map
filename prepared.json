@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "scale": 1000,
+    "vertexCount": 4,
+    "note": "areaTimes2 = 2 * area_in_scaled_units; area_in_m2 = areaTimes2 / (2 * SCALE^2)"
+  },
+  "coordsMeters": [
+    [
+      701008.027276662,
+      9314342.671808133
+    ],
+    [
+      701100.3370284551,
+      9314342.355529826
+    ],
+    [
+      701100.7160228166,
+      9314452.95322859
+    ],
+    [
+      701008.4060968223,
+      9314453.26945668
+    ]
+  ],
+  "intCoords": [
+    [
+      701008027,
+      9314342672
+    ],
+    [
+      701100337,
+      9314342356
+    ],
+    [
+      701100716,
+      9314452953
+    ],
+    [
+      701008406,
+      9314453269
+    ]
+  ],
+  "leavesHex": [
+    "0x0eb7ac01a1f6d96f00ca5989d6df9acc0739263990c47ff248e7bd723ae3a04e",
+    "0xed312c07fac64768734465e76ca4931948d3379848b4f6813964d4fd4ce0e759",
+    "0x669ed17dc0fcad084529e5ac42bff8d1359e63bcfc79b4e7da26797b213d4737",
+    "0x5cc2f303b2b0b0637ffba1bcdb72e441c015ca8dcee494aa8f35307c3f98db54"
+  ],
+  "merkleRoot": "0x8e578fb54a78855fefa448a13153e5d9cabbce7375bfe987f7d68195499ae261",
+  "proofs": [
+    [
+      "0xed312c07fac64768734465e76ca4931948d3379848b4f6813964d4fd4ce0e759",
+      "0xaa25cecadc5a7db488b9768f81930d8e077377797885a265468383380044c3fe"
+    ],
+    [
+      "0x0eb7ac01a1f6d96f00ca5989d6df9acc0739263990c47ff248e7bd723ae3a04e",
+      "0xaa25cecadc5a7db488b9768f81930d8e077377797885a265468383380044c3fe"
+    ],
+    [
+      "0x5cc2f303b2b0b0637ffba1bcdb72e441c015ca8dcee494aa8f35307c3f98db54",
+      "0x8078ab1b1592118a9b7d270899446c100d3d0611c471f3d4122a80362019cdab"
+    ],
+    [
+      "0x669ed17dc0fcad084529e5ac42bff8d1359e63bcfc79b4e7da26797b213d4737",
+      "0x8078ab1b1592118a9b7d270899446c100d3d0611c471f3d4122a80362019cdab"
+    ]
+  ],
+  "areaTimes2": "20418657668",
+  "areaScaledFloor": "10209328834"
+}

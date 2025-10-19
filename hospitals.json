@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Rumah Sakit Al-Shifa",
+    "description": "Rumah sakit utama Gaza. Saat ini dalam kondisi kritis dengan pasien melebihi kapasitas.",
+    "attributes": [
+      {
+        "trait_type": "Kategori Fasilitas",
+        "value": "Rumah Sakit"
+      },
+      {
+        "trait_type": "Kapasitas Maksimal",
+        "value": "500 pasien"
+      },
+      {
+        "trait_type": "Pasien Saat Ini",
+        "value": 720
+      },
+      {
+        "trait_type": "ICU",
+        "value": "20 tempat tidur (18 terisi)"
+      },
+      {
+        "trait_type": "Ventilator",
+        "value": "15 unit (12 aktif)"
+      },
+      {
+        "trait_type": "Kebutuhan Mendesak",
+        "value": "Obat, darah, oksigen, listrik"
+      },
+      {
+        "trait_type": "Status Operasional",
+        "value": "Kritis"
+      },
+      {
+        "trait_type": "Tanggal Update",
+        "value": "2025-09-21"
+      },
+      {
+        "trait_type": "Sumber Verifikasi",
+        "value": "Kemenkes Palestina / UN OCHA"
+      },
+      {
+        "trait_type": "Hash Laporan",
+        "value": "SHA-256: aabbccddeeff..."
+      }
+    ],
+    "location": {
+      "latitude": 31.5296,
+      "longitude": 34.4561
+    },
+    "polygon": [
+      [
+        34.4555,
+        31.5292
+      ],
+      [
+        34.4567,
+        31.5292
+      ],
+      [
+        34.4567,
+        31.53
+      ],
+      [
+        34.4555,
+        31.53
+      ],
+      [
+        34.4555,
+        31.5292
+      ]
+    ]
+  }
+]
